@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model Veiculo {
+  id       Int       @id @default(autoincrement())
+  placa    String    @unique
+  modelo   String
+  marca    String
+  cor      String?
+  ano      Int?
+  estadias Estadia[]
+}
+
+model Estadia {
+  id         Int       @id @default(autoincrement())
+  entrada    DateTime  @default(now())
+  saida      DateTime?
+  valorHora  Float
+  valorTotal Float?
+  veiculoId  Int
+  veiculo    Veiculo   @relation(fields: [veiculoId], references: [id], onDelete: Cascade)
+}
